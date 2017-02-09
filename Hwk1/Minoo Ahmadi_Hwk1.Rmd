@@ -2,6 +2,7 @@
 title: "Hwk1"
 author: "Minoo Ahmadi"
 date: "February 8, 2017"
+header-includes: - \usepackage{bbm}
 output: pdf_document
 ---
 
@@ -10,6 +11,8 @@ output: pdf_document
 require("knitr")
 opts_knit$set(root.dir = "~/gits/project/")
 ```
+
+
 ## Part I
 ### 1.
 A mean of 35.17 (SD = 29.32) was found for the population.  A median of 27.5 indicates a right-skewness in the data, which is probably due to the maximum value of 150 for the subject with ID = 27. The variance is 860.15.
