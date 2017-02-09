@@ -1,0 +1,42 @@
+---
+title: "Hwk1"
+author: "Minoo Ahmadi"
+date: "February 8, 2017"
+output: pdf_document
+---
+
+
+```{r "setup", include=FALSE}
+require("knitr")
+opts_knit$set(root.dir = "~/gits/project/")
+```
+## Part I
+### 1.
+A mean of 35.17 (SD = 29.32) was found for the population.  A median of 27.5 indicates a right-skewness in the data, which is probably due to the maximum value of 150 for the subject with ID = 27. The variance is 860.15.
+
+```{r}
+getwd()
+setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk1")
+pop.data <- read.table ("population data 2017S.csv", header = TRUE, sep = ",")
+summary(pop.data)
+
+install.packages("pastecs")
+install.packages("boot")
+library(boot)
+library(pastecs)
+head(pop.data)
+stat.desc(pop.data$commute, basic = FALSE)
+
+```
+
+### 2.
+\mu = 30
+\mu \neq 30
+
+```{r}
+samp.data <- read.table ("sample data 2017S.csv", header = TRUE, sep = ",")
+summary(samp.data)
+head(samp.data)
+
+```
+
