@@ -41,6 +41,15 @@ H_1: \mu \neq 30
 samp.data <- read.table ("sample data 2017S.csv", header = TRUE, sep = ",")
 summary(samp.data)
 head(samp.data)
+hist(samp.data$commute)
+boxplot(samp.data$commute)
+# df<- length(samp.data$ID)-1
+# t.dist<- dt(samp.data$commute, df)
+# plot(t.dist)
+library(ggplot2)
+ggplot(samp.data, aes(ID, commute)) + geom_point(size = 2) + geom_smooth(method = "lm")   # or: plot (samp.data$commute~samp.data$ID)
 
+# t.test(samp.data$commute, alternative = "two.sided")
+t.test(samp.data$commute, alternative = "two.sided", mu = 30)
 ```
 
