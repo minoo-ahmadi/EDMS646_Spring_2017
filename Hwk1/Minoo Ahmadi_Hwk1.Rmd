@@ -2,7 +2,8 @@
 title: "Hwk1"
 author: "Minoo Ahmadi"
 date: "February 8, 2017"
-header-includes: - \usepackage{bbm}
+header-includes:
+   - \usepackage{bbm}
 output: pdf_document
 ---
 
