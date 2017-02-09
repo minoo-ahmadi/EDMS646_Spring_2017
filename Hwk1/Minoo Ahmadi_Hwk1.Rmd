@@ -51,5 +51,15 @@ ggplot(samp.data, aes(ID, commute)) + geom_point(size = 2) + geom_smooth(method 
 
 # t.test(samp.data$commute, alternative = "two.sided")
 t.test(samp.data$commute, alternative = "two.sided", mu = 30)
+
+z.test(samp.data$commute,alternative = "two.sided", mu = 30, sigma.x = 29.32835)
+z.test(samp.data$commute,alternative = "two.sided", sigma.x = 29.32835)
+
 ```
 
+```{r}
+htn.data <- read.table ("Hypertension.csv", header = TRUE, sep = ",")
+head(htn.data)
+tail(htn.data)
+
+```
