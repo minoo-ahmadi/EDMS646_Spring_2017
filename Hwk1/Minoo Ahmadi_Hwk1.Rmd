@@ -30,8 +30,8 @@ stat.desc(pop.data$commute, basic = FALSE)
 ```
 
 ### 2.
-\mu = 30
-\mu \neq 30
+H_0: \mu = 30
+H_1: \mu \neq 30
 
 ```{r}
 samp.data <- read.table ("sample data 2017S.csv", header = TRUE, sep = ",")
