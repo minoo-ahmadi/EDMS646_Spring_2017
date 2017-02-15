@@ -68,5 +68,34 @@ curve(dnorm(x, mean=mean(htn.data$hyptension), sd=sd(htn.data$hyptension)), add=
 boxplot(htn.data$hyptension)
 qqline(htn.data$hyptension, distribution = qnorm,probs = c(0.25, 0.75))
 
+ggplot(htn.data, aes(hyptension))+ geom_bar()+ facet_wrap(~ diet)
+hist(htn.data$hyptension)
+x<-seq(0,100,0.001) 
+curve(dnorm(x, mean=mean(htn.data$hyptension), sd=sd(htn.data$hyptension)), add=TRUE)
+boxplot(htn.data$hyptension)
+qqline(htn.data$hyptension, distribution = qnorm,probs = c(0.25, 0.75))
+
+# diet.1 <- htn.data[htn.data$diet==1]
+diet.1 <- htn.data$hyptension[1:36]
+# diet.2 <- htn.data$diet[htn.data$diet==2]
+diet.2 <- htn.data$hyptension[37:72]
+# data.diet1<- htn.data[diet.1]
+# data.diet2<- htn.data[diet.2]
+# stat.desc(data.diet1$hyptension, basic = FALSE)
+stat.desc(diet.1, basic = FALSE)
+stat.desc(diet.2, basic = FALSE)
+
+hist(diet.1)
+hist(diet.2)
+
+
+x<-seq(0,100,0.001) 
+curve(dnorm(x, mean=mean(htn.data$hyptension), sd=sd(htn.data$hyptension)), add=TRUE)
+boxplot(diet.1)
+boxplot(diet.2)
+
+# t.test(diet.1, diet.2)
+# t.test(htn.data$hyptension, htn.data$diet)
+t.test(hyptension~diet, data= htn.data)
 
 ```
