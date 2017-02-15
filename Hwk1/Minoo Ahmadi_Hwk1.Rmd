@@ -61,5 +61,12 @@ z.test(samp.data$commute,alternative = "two.sided", sigma.x = 29.32835)
 htn.data <- read.table ("Hypertension.csv", header = TRUE, sep = ",")
 head(htn.data)
 tail(htn.data)
+stat.desc(htn.data$hyptension, basic = FALSE)
+hist(htn.data$hyptension)
+x<-seq(0,100,0.001) 
+curve(dnorm(x, mean=mean(htn.data$hyptension), sd=sd(htn.data$hyptension)), add=TRUE)
+boxplot(htn.data$hyptension)
+qqline(htn.data$hyptension, distribution = qnorm,probs = c(0.25, 0.75))
+
 
 ```
