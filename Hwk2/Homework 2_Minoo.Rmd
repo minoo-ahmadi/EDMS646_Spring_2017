@@ -1,0 +1,50 @@
+---
+title: "Homework 2"
+author: "Minoo Ahmadi"
+date: "February 16, 2017"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Part 1: Correlation
+## 1.
+$$ \omega = x_a^2 + \sum_{i = 2}^{25} $$
+## 2.
+
+```{r}
+
+
+```
+## 3.
+## 4.
+## 5.
+
+# Part 2: Simple Regression
+1.
+2.
+3.
++
++
++
+4.
+5.
+6.
++
++
++
++
++
++
++
++
++
+7.
++ a
++
++
++
+
+# Part 3: ANOVA Table
+1.
