@@ -1,12 +1,14 @@
 ---
 title: "EDMS 646: Homework 2"
 author: "Minoo Ahmadi"
-date: "February 16, 2017"
+date: "February 23, 2017"
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+require("knitr")
+opts_knit$set(root.dir = "~/gits/project/")
 ```
 
 
