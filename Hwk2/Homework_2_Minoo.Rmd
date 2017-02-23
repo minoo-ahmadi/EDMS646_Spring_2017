@@ -13,7 +13,6 @@ opts_knit$set(root.dir = "~/gits/project/")
 
 ```{r}
 getwd()
-setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Data")
 burt.data <- read.table ("Burt.csv", header = TRUE, sep = ",")
 summary(burt.data)
 
