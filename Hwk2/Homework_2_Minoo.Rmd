@@ -7,16 +7,15 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-require("knitr")
-opts_knit$set(root.dir = "~/gits/project/")
 ```
 
-```{r}
+```{r include=FALSE}
 getwd()
+setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk2")
 burt.data <- read.table ("Burt.csv", header = TRUE, sep = ",")
 summary(burt.data)
 head(burt.data)
-
+tail(burt.data)
 ```
 
 
@@ -28,6 +27,15 @@ head(burt.data)
 \begin{enumerate}
 
 \item 
+```{r, comment="", results="asis"}
+
+library(ggplot2)
+dev.off()
+ggplot(burt.data, aes(OwnIQ, FostIQ)) + geom_point(size = 2) + geom_smooth(method = "lm") # + scale_color_brewer(palette = "Set1")   # or: plot (burt.data$OwnIQ~burt.data$FostIQ)
+
+
+```
+
 
 \item 
 
