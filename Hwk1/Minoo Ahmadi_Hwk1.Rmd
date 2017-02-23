@@ -96,6 +96,13 @@ boxplot(diet.2)
 
 # t.test(diet.1, diet.2)
 # t.test(htn.data$hyptension, htn.data$diet)
-t.test(hyptension~diet, data= htn.data)
+t.test(hyptension~diet, data= htn.data, var.equal = TRUE) # to get the student t-test, select var.equal = TRUE
+
+#levene.test:
+y <- c(diet.1, diet.2)
+group <- as.factor(c(rep(1, length(diet.1)), rep(2, length(diet.2))))
+install.packages("lawstat")
+library(lawstat)
+levene.test(y, group)
 
 ```
