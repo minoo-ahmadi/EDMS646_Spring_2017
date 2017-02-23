@@ -15,6 +15,7 @@ opts_knit$set(root.dir = "~/gits/project/")
 getwd()
 burt.data <- read.table ("Burt.csv", header = TRUE, sep = ",")
 summary(burt.data)
+head(burt.data)
 
 ```
 
