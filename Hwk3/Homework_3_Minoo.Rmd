@@ -15,25 +15,41 @@ knitr::opts_chunk$set(dev = 'pdf')
 
 ```{r include=FALSE}
 getwd()
-setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk2")
-burt.data <- read.table ("Burt.csv", header = TRUE, sep = ",")
-summary(burt.data)
-head(burt.data)
-tail(burt.data)
+# setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk3")
+hsb1.data <- read.table ("HSB1.csv", header = TRUE, na.strings="-99", sep = ",")
+summary(hsb1.data)
+head(hsb1.data)
+tail(hsb1.data)
 ```
 
+```{r}
+install.packages("psych", dependencies=TRUE)
+library(lattice)
 
+```
 
 \begin{center}
 \Large \textbf{PART 1: Multiple Regression - Initial model: Use data set HSB1}
 \end{center}
 
-1. There's a relatively strong positive linear relationship between IQ score of identical twins raised in foster homes (FostIQ) and that of their siblings whom were raised in the biological parent's homes (QwnIQ).
+1. 
 ```{r include=FALSE}
 
-library(ggplot2)
-dev.off()
+hsb1.lm <- lm(science~locus + concept + mot, data=hsb1.data)
+summary(hsb1.lm)
+names(hsb1.lm)
 ```
+\[\hat{Y} = 50.3514 + 4.7188(\text{locus}) + 0.2549(\text{concept}) + 1.7113(\text{mot})\]
+
+Controlling for self-concept and motivation, one unit increase in locus of control will increase the science score by 4.7188 units.
+Controlling for locus of control and motivation, one unit increase in self-concept will increase the science score by 0.2549 units.
+Controlling for locus of control and self-concept, one unit increase in motivation will increase the science score by 1.7113 units.
+
+
+Independence means that, the Y values are statistically independentof one another.
+Linearity means that, the mean value Y isproportional to the independent variable (X). Hence, a straight line function.
+Normally Distributed means that, for a fixed value of X,Yhas a normal distribution.
+Homoscedasticity or Homogeneity means that,the varianceofYis the same for any X (constant variance). 
 
 ```{r echo=TRUE, fig.width= 3, fig.height= 3}
 ggplot(burt.data, aes(OwnIQ, FostIQ)) + geom_point(size = 2) + geom_smooth(method = "lm") +
