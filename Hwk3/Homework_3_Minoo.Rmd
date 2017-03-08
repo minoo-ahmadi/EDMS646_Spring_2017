@@ -1,0 +1,227 @@
+---
+title: "EDMS 646: Homework 3"
+author: "Minoo Ahmadi"
+date: "March 9, 2017"
+output: pdf_document
+header-includes: \usepackage{float}
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(dev = 'pdf')
+```
+
+```{r include=FALSE}
+getwd()
+setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk2")
+burt.data <- read.table ("Burt.csv", header = TRUE, sep = ",")
+summary(burt.data)
+head(burt.data)
+tail(burt.data)
+```
+
+
+
+\begin{center}
+\Large \textbf{Part 1: Correlation}
+\end{center}
+
+1. There's a relatively strong positive linear relationship between IQ score of identical twins raised in foster homes (FostIQ) and that of their siblings whom were raised in the biological parent's homes (QwnIQ).
+```{r include=FALSE}
+
+library(ggplot2)
+dev.off()
+```
+
+```{r echo=TRUE, fig.width= 3, fig.height= 3}
+ggplot(burt.data, aes(OwnIQ, FostIQ)) + geom_point(size = 2) + geom_smooth(method = "lm") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+        
+     )
+
+```
+
+
+2.
+```{r}
+cor.test(burt.data$OwnIQ, burt.data$FostIQ)
+
+```
+correlation coefficient (r): 0.8767131
+p < .001
+
+3.
+\begin{align*}
+t &= r \sqrt{\frac{n-2}{1-r^2}}= 0.8767131 \sqrt{\frac{51}{0.2313741}}= 13.01623\\
+\nu &= n-2 = 53-2 = 51\\
+\rightarrow t(51) &= 13.01
+\end{align*}
+
+4. The critical t-value is $\pm 2.008$ and the observed t-value exceeds this value. Hence, r is statistically significant at the $\alpha = .05$.
+
+5. A test of the Pearson correlation was used to address the linear relation between IQ score of identical twins raised in foster homes (M = 98.11, SD = 15.21) and that of their siblings whom were raised in the biological parent's homes (M = 97.36, SD = 14.69). Using an alpha level of 0.05, this test was found to be statistically significant($\hat{\rho} = 0.87$, $t(51) = 13.01$, $p<.05$ (two-tailed)) indicating that these two variables are positively linearly related. 
+
+![Correlation between IQ scores of the 2 groups.](plot1.png)
+
+
+
+\begin{center}
+\Large \textbf{Part 2: Simple Regression}
+\end{center}
+
+1.
+```{r include=FALSE}
+reg.data <- read.table ("REG1.csv", header = TRUE, sep = ",")
+head(reg.data)
+
+```
+
+
+```{r}
+reg.lm<- lm (Y~X, data = reg.data)
+summary(reg.lm)
+```
+
+2. It looks evenly distributed to me and I don't seem to detect any outliers here.
+
+```{r include = FALSE}
+require(MASS)
+require(plotrix)
+
+st.residuals <- stdres(reg.lm)
+```
+
+```{r fig.width= 3.5, fig.height= 3.5}
+plot(st.residuals, ylim = c(-3, 3))
+```
+
+3.
+        (a)
+```{r fig.width= 3, fig.height= 3}
+ggplot(reg.data, aes(X, Y))+ geom_point(size = 2) + geom_smooth(method = "lm") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+        
+     )
+```
+
+        (b)
+```{r fig.width= 3.5, fig.height= 3.5}
+plot(residuals(reg.lm)~reg.data$X, col="black", 
+pch=1, bty="l", xlab="X", 
+ylab="Residuals", 
+xlim=c(20,40),ylim=c(-20,20))
+
+```
+
+        (c)
+```{r fig.width= 3.5, fig.height= 3.5}
+plot(residuals(reg.lm)~fitted.values(reg.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y", 
+ylab="Residuals",
+xlim=c(80,120),ylim=c(-20,20))
+
+```
+
+4.
+
+Independence of observarions: Not violated. Observations seem to be independent from each otehr.
+
+Linearity of the function relating X and Y: A positive linear relationship can be seen between X and Y from the plot in 3(a).
+
+Homoscedasticity of Y or residuals: I can't see any obvious fanning in the residuals distribuion plot.
+
+Normality of Y or residuals: I'm not sure if this is a normal distribution. It looks more uniform rather than bell-shaped. So, normality might have been violated, but we need better statistical analysis to test this.
+
+5. \[\hat{Y}= 44.2801 + 1.8573X\]
+When X is equal to zero, Y has a value of 44.2801 (the baseline value of Y).
+The regression line has a slope of 1.8573, which indicates 1 unit increase in X increases Y by 1.8573 units.
+$r=0.65$
+6.
+        (a)
+$r=0.65$ There's a medium to large correlation between X and Y.
+```{r include=FALSE}
+```
+        (b)
+$r^2=0.4225$. This indicates the shared variance between X and Y. In other words, X explains 42% of the variablity in Y.
+```{r include=FALSE}
+```
+        (c)
+$SS_\text{regression}= 4182.5$. It indicates the variablity in Y due to its relationship with X. It seems large, which makes sense because they have a significant correlation.
+
+```{r include=FALSE}
+anova(reg.lm)
+
+```
+        (d)
+$SS_\text{residual}= 5717.8$. It indicates the variablity in Y not explained by its relationship with X. This is the value that is minimized by the least squares procedure.
+```{r include=FALSE}
+```
+        (e)
+$S_b=\text{standard error of the slope}= 0.2194$. Variablity of the sampling distribution for slope.
+```{r include=FALSE}
+```
+        (f)
+$t_\text{observed}= 8.467$, $t_\text{critical}= 1.984$ the observed t exceeds the critical t, which indicates X significantly predicts Y.
+```{r include=FALSE}
+```
+        (g)
+$F(1,98)=71.69$. This is a large F-value and shows that a large portion of variabiliy in Y is explained by our model. 
+```{r include=FALSE}
+```
+        (h)
+p-value for the slope< .001. It indicates a significant relationship between X and Y.
+```{r include=FALSE}
+```
+        (i)
+$\% 95 CI= [1.421976 \qquad 2.292618]$. Our slope is outside the $\% 95 CI$ range and we can reject the null hypothesis.  
+```{r include=FALSE}
+confint(reg.lm) # gets the %95 CI
+```
+7.
+        (a) 
+This research was designed to determine the influence of hours of sleep at night on college students' performance in a test the day after.
+```{r include=FALSE}
+```
+        (b) 
+A simple linear regression was performed to evaluate the relationship between sleep hours and performance and to see whether hours of sleep can predict students' performance on the test.
+```{r include=FALSE}
+```
+        (c) 
+Students' performance was regressed on the average sleep hours the night before. The overall multiple regression was statistically significant ($R^2 = 0.42, F(1, 98) =  71.69, p < 0.001$).  Sleep hours accounted for 42% of the variance in students' performance on the test. The unstandardized regression coefficient ($\beta$) for sleep hours was 1.85 $(t(98)= 2.266, p < 0.001)$, meaning that for each additional hour of sleep, students' performance on the test increased by 1.85 points. This finding suggests that for each additional hour students sleep the night before the test, their performance will improve by 1.85 points.
+```{r include=FALSE}
+```
+        (d) 
+These results suggest that sleeping well the night before a test is indeed an important influence on students’ performance on the test. Students who want to improve their performance on the test may do so by sleeping for longer hours the night before the test. These findings suggest that each additional hour of sleep the night before the test should result in close to a 2-point increase in students’ performance on the test.
+ 
+
+\begin{center}
+\Large \textbf{Part 3: ANOVA Table}
+\end{center}
+
+1.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c|c|c}
+Source & SS & df & MS & F & sig. \\\hline
+Regression & 300 & 4 & 75 & 59.25 & <.001 \\
+Residuals & 500 & 5 & 1.26\\
+Total & 800 & 9
+\end{tabular}
+\caption{\label{tab:widgets}The ANOVA table.}
+\end{table}
+

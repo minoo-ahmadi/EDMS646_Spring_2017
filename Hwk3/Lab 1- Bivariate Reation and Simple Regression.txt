@@ -1,0 +1,248 @@
+#Lab 1 ? Bivariate Relations & Simple Regression 
+
+#I. Data
+#We will be using a common data set for all lab sessions throughout the quarter. The data set comes from the Census Bureau and uses data collected by the American Community Survey. The unit of analysis is metropolitan cities throughout the United States. There are 517 such observations in the data set. The variables in the data set include: 
+#GEO_NAME	Metropolitan and Micropolitan Statistical Area
+#areatype	Metropolitan and Micropolitan
+#pop_size	Total Estimated Population
+#division	US Division
+#region	Region
+#commute	Mean travel time to work
+#hh_chil	Percent households with children <18
+#edu_hs	Percentage adults with High School Diploma
+#edu_coll	Percentage adults with Bachelor's Degree
+#income	Median household income
+#income2	Median household income (in thousands)
+#no_car	Percentage of households without vehicle
+#female	Percent population - female
+#age	Median age
+#senior	Percent population 65 years or older
+#white	Percent Population - White
+#black	Percent Population - Black
+#indian	Percent Population - Indian
+#asian	Percent Population - Asian
+#hawaiian	Percent Population - Hawaiian
+#other	Percent Population - Other
+#hispanic	Percent Population - Hispanic
+
+#The variables for division and region are defined by the map included on the last page. The variable areatype takes on two values ? micro and metro ? depending on the following definitions:
+#	A metro area contains a core urban area of 50,000 or more population
+#	A micro area contains an urban core of at least 10,000 (but less than 50,000) population
+#During the semester we will be answering the research question:
+#What best predicts average commute times of US cities?
+#There is a mix of qualitative and quantitative predictor variables that we will use to answer the question, using regression based approaches.
+
+
+
+# get the working directory 
+# set the working directory 
+getwd()
+setwd("C:\\EDMS646\\Data")
+
+#Install a package and load 
+install.packages("psych", dependencies=TRUE)
+library(lattice)
+
+#Read data as a.csv file 
+
+census <-read.csv("census.csv", header=TRUE, na.strings="-99", sep=",") 
+
+
+#Viewing the data and getting summary statistics
+
+str(census)
+head(census)
+tail(census)
+summary(census)
+
+########Univariate########
+
+#to get univariate descriptive statistics (numeric description) 
+library(psych)
+# descriptive statistics
+describe(census$commute)
+# frequency table
+table(census$commute)
+
+#for more information 
+?describe
+?table
+
+#Univariate plots
+#Conventional histogram (graphic description) 
+
+par(ask=TRUE)
+with(census, {hist(commute, col="red", main="")
+           hist(commute, breaks=15, col="blue", main="")
+           hist(commute, breaks="FD", col="orange", main="")
+})
+
+
+#standardizing and plotting# 
+install.packages("pls", dependencies=TRUE)
+library(pls)
+st.commute <-stdize(as.matrix(census$commute))
+hist(st.commute)
+summary(st.commute)
+
+
+# for more information about histogram 
+?hist
+?par
+
+#Create boxplot of "commute" variable 
+with(census, boxplot(commute, col="gold",notch=TRUE, 
+pars=list(boxwex=.5,staplewex=.25,outwex=3,outpch=19),ylab="commute"))
+
+
+########Bivariate########
+
+#numeric (Pearson's correlation) 
+cor(census$commute,census$income2) 
+cov(census$commute,census$income2) 
+?cor
+
+cor(census$commute,census$income2) 
+library(Hmisc) 
+rcorr(census$commute,census$income2, type="pearson")
+rcorr(cbind(census$commute,census$income2,census$income), type="pearson")
+
+#when a p-value is very small, it is printed as zero. 
+# to know exact p-values 
+r <- rcorr(cbind(census$commute,census$income2), type="pearson")
+r$P 
+
+# graphic description  
+# To produce a scatterplot 
+# (lots of options here)
+# See "par", "plot" by typing in ?par or ?plot in the command wondow
+
+par(cex.axis=1, cex.lab=1.25)
+with(census, plot(census$commute~census$income2, bty="l", pch=20, col="blue",
+xlab="income", ylab="commute"))
+
+plot(census$income2,census$commute, bty="l", pch=25, col="blue",
+xlab="income", ylab="commute")
+
+
+####Simple linear Regression#### 
+
+#Create a scatterplot 
+
+plot(census$commute~census$income2, data = psy, 
+col = "blue")
+
+plot(census$commute~census$income2, data = psy, 
+col = "blue", xlab="income", ylab="commute")
+
+plot(census$commute~census$income2, data = census, 
+col = "red", pch=19, bty = "l")
+
+#Run a simple linear regression in R
+
+census.lm <- lm(commute~income2, data=census)
+summary(census.lm)
+names(census.lm)
+
+?lm
+
+#Produce fitted regression line
+
+install.packages("MASS", dependencies=TRUE)
+install.packages("plotrix", dependencies=TRUE)
+require(MASS)
+require(plotrix)
+
+plot(commute~income2, data=census, col="black", 
+pch=20, bty="l", xlab="Median Income (Thousands)", 
+ylab="Average Commuting Time", 
+xlim=c(0,80),ylim=c(0,50))
+abline(census.lm)
+
+#Producing ANOVA output of the linear regression model
+anova(census.lm)
+
+# Confidence Intervals
+# 95% confidence interval for parameters
+confint(census.lm)
+
+# 95% confidence interval for predicted values 
+predict(census.lm,data.frame(income2 = income2), level = 0.95, interval = "confidence") 
+
+
+
+################ 
+
+#plot: Observed Y vs predicted Y 
+names(census.lm)
+census.lm$effects
+
+plot(fitted.values(census.lm)~census$commute, col="black", 
+pch=1, bty="l", xlab="Observed Average Commuting Time", 
+ylab="Predicted Average Commuting Time", 
+xlim=c(0,40),ylim=c(0,40))
+
+plot(fitted.values(census.lm)~census$commute, col="black", 
+pch=1, bty="l", xlab="Observed Average Commuting Time", 
+ylab="Predicted Average Commuting Time", 
+xlim=c(10,40),ylim=c(10,30))
+
+
+#Plot: Residuals vs X
+
+plot(residuals(census.lm)~census$income2, col="black", 
+pch=1, bty="l", xlab="Median income", 
+ylab="Residuals", 
+xlim=c(0,80),ylim=c(-20,20))
+
+#Plot: Resisulas vs Predicted Y 
+
+plot(residuals(census.lm)~fitted.values(census.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y (commuting time)", 
+ylab="Residuals", 
+xlim=c(20,25),ylim=c(-20,20))
+
+
+# getting stadardized residuals
+st.residuals <- stdres(census.lm)
+st.residuals 
+
+
+
+
+
+
+### export plots as files ### 
+dev.off() # This is to close the plot window 
+
+jpeg('rplot.jpg')
+plot(residuals(census.lm)~fitted.values(census.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y (commuting time)", 
+ylab="Residuals", 
+xlim=c(20,25),ylim=c(-20,20))
+dev.off()
+
+pdf('rplot.pdf')
+plot(residuals(census.lm)~fitted.values(census.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y (commuting time)", 
+ylab="Residuals", 
+xlim=c(20,25),ylim=c(-20,20))
+dev.off()
+
+
+postscript('rplot.ps')
+plot(residuals(census.lm)~fitted.values(census.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y (commuting time)", 
+ylab="Residuals", 
+xlim=c(20,25),ylim=c(-20,20))
+dev.off()
+
+# for only windows # 
+win.metafile('rplot.wmf')
+plot(residuals(census.lm)~fitted.values(census.lm), col="black", 
+pch=1, bty="l", xlab="Predicted Y (commuting time)", 
+ylab="Residuals", 
+xlim=c(20,25),ylim=c(-20,20))
+dev.off()
+
+
