@@ -15,18 +15,14 @@ knitr::opts_chunk$set(dev = 'pdf')
 
 ```{r include=FALSE}
 getwd()
-# setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk3")
+setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk3")
 hsb1.data <- read.table ("HSB1.csv", header = TRUE, na.strings="-99", sep = ",")
 summary(hsb1.data)
 head(hsb1.data)
 tail(hsb1.data)
 ```
 
-```{r}
-install.packages("psych", dependencies=TRUE)
-library(lattice)
 
-```
 
 \begin{center}
 \Large \textbf{PART 1: Multiple Regression - Initial model: Use data set HSB1}
@@ -34,7 +30,6 @@ library(lattice)
 
 1. 
 ```{r include=FALSE}
-
 hsb1.lm <- lm(science~locus + concept + mot, data=hsb1.data)
 summary(hsb1.lm)
 names(hsb1.lm)
@@ -45,46 +40,16 @@ Controlling for self-concept and motivation, one unit increase in locus of contr
 Controlling for locus of control and motivation, one unit increase in self-concept will increase the science score by 0.2549 units.
 Controlling for locus of control and self-concept, one unit increase in motivation will increase the science score by 1.7113 units.
 
-
-Independence means that, the Y values are statistically independentof one another.
-Linearity means that, the mean value Y isproportional to the independent variable (X). Hence, a straight line function.
-Normally Distributed means that, for a fixed value of X,Yhas a normal distribution.
-Homoscedasticity or Homogeneity means that,the varianceofYis the same for any X (constant variance). 
-
-```{r echo=TRUE, fig.width= 3, fig.height= 3}
-ggplot(burt.data, aes(OwnIQ, FostIQ)) + geom_point(size = 2) + geom_smooth(method = "lm") +
-   theme(
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        panel.border = element_blank(),
-        axis.line = element_line(),
-        axis.ticks = element_line(),
-        
-     )
-
-```
-
-
 2.
-```{r}
-cor.test(burt.data$OwnIQ, burt.data$FostIQ)
+H_0: $\beta_{locus} = \beta_{concept} = \beta_{mot} = 0$
+H_1: $\beta_j \neq 0$
 
-```
-correlation coefficient (r): 0.8767131
-p < .001
+
 
 3.
-\begin{align*}
-t &= r \sqrt{\frac{n-2}{1-r^2}}= 0.8767131 \sqrt{\frac{51}{0.2313741}}= 13.01623\\
-\nu &= n-2 = 53-2 = 51\\
-\rightarrow t(51) &= 13.01
-\end{align*}
-
-4. The critical t-value is $\pm 2.008$ and the observed t-value exceeds this value. Hence, r is statistically significant at the $\alpha = .05$.
 
 
-
+4. 
 
 
 \begin{center}
@@ -92,30 +57,10 @@ t &= r \sqrt{\frac{n-2}{1-r^2}}= 0.8767131 \sqrt{\frac{51}{0.2313741}}= 13.01623
 \end{center}
 
 1.
-```{r include=FALSE}
-reg.data <- read.table ("REG1.csv", header = TRUE, sep = ",")
-head(reg.data)
 
-```
-
-
-```{r}
-reg.lm<- lm (Y~X, data = reg.data)
-summary(reg.lm)
-```
 
 2. It looks evenly distributed to me and I don't seem to detect any outliers here.
 
-```{r include = FALSE}
-require(MASS)
-require(plotrix)
-
-st.residuals <- stdres(reg.lm)
-```
-
-```{r fig.width= 3.5, fig.height= 3.5}
-plot(st.residuals, ylim = c(-3, 3))
-```
 
 
 \begin{center}
@@ -123,18 +68,6 @@ plot(st.residuals, ylim = c(-3, 3))
 \end{center}
 
 1.
-
-\begin{table}[H]
-\centering
-\begin{tabular}{c|c|c|c|c|c}
-Source & SS & df & MS & F & sig. \\\hline
-Regression & 300 & 4 & 75 & 59.25 & <.001 \\
-Residuals & 500 & 5 & 1.26\\
-Total & 800 & 9
-\end{tabular}
-\caption{\label{tab:widgets}The ANOVA table.}
-\end{table}
-
 
 2.
 
