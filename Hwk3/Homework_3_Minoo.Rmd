@@ -146,14 +146,6 @@ st.residuals <- stdres(hsb1.lm)
 hist(st.residuals, freq = FALSE)
 curve(dnorm, add = TRUE)
 
-
-# get probability distribution for residuals
-# probDist <- pnorm(st.residuals)
-# create PP plot
-# plot(ppoints(length(st.residuals)), sort(probDist), main="PP Plot", xlab = "Observed Probability", ylab = "Expected Probability")
-#add diagonal line
-# abline(0,1) 
-
 # create PP plot
 ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept = 0, slope = 1) +
    theme(
