@@ -9,6 +9,8 @@ header-includes: \usepackage{float}
 
 
 ```{r setup, include=FALSE}
+chooseCRANmirror(graphics=FALSE, ind=1)
+install.packages("knitr")
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(dev = 'pdf')
 ```
@@ -41,15 +43,131 @@ Controlling for locus of control and motivation, one unit increase in self-conce
 Controlling for locus of control and self-concept, one unit increase in motivation will increase the science score by 1.7113 units.
 
 2.
-H_0: $\beta_{locus} = \beta_{concept} = \beta_{mot} = 0$
-H_1: $\beta_j \neq 0$
+```{r include=FALSE}
+anova(hsb1.lm)
+```
 
+$H_0$: $\beta_{locus} = \beta_{concept} = \beta_{mot} = 0$\
+$H_1$: $\beta_j \neq 0$
 
+The null hypothesis states that the model has no predictive capability and all the regression coefficients equal to zero. In other words, none of the 3 predictors (locus of control, self-concept and motivation) can predict the outcome (science score).
+
+The alternative hypothesis on the other hand, states that at least one of the predictors has the capability of predicting the outcome. In other words, at least one of the regression coefficients is significantly different from 0.
+
+Looking at the results from the ANOVA table, our F-value exceeds the critical F-value and the p-value is less than .001. Therefore, at least one of our predictors has a significant regression coefficient and we reject the null hypothesis.
 
 3.
+As opposed to ANOVa, which is an omnibus test, regression table is reporting t-test for each of the predictors.
+
+The null hypothesis for each of the predictors is that this specific predictor (let it be locus of control, self-concept or motivation) has no predictive capability for the outcome (science score) when controlling for other predictors in the model. In other words, the true slope is 0.
+
+The alternative hypothesis on the other hand states that, when the other predictors in the model are controlled for, this specific predictor predicts the outcome and its regression coefficient is significantly different from 0.
+
+Based on the t-tests, it seems that locus of control is the only predictor in our model that can significantly predict the science score when accounting for self-concept and motivation. For locus of predictor, the t-value exceeds the critical t-value and our p-value is less than .001. Hence, we reject the null hypothesis.
+
+The t-test is not significant for the concept and motivation and we cannot conclude that they have the capability of predicting science score.
+
+Standard error of the regression coefficients show the variability of the sampling distribution for the slope for each of the predictors when accounting for the other predictors.
+
+4. Having a look at the resicuals vs individual predictors, it seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept.
+
+The residulads vs predicted Y plot indicates homogenity of variances (no obvious fanning observed).
+The histogram for standarized residulas is left-skewed.
+
+```{r fig.width= 4, fig.height= 3}
+install.packages("ggplot2")
+library(ggplot2)
+
+#plot: Observed Y vs predicted Y 
+ggplot(hsb1.data, aes(science, fitted.values(hsb1.lm)))+ geom_point(size = 2) + xlab("Observed Science Score") + ylab("Predicted Science Score") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+#Plot: Residuals vs X
+ggplot(hsb1.data, aes(locus, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Locus of Control") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+ggplot(hsb1.data, aes(concept, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Self-Concept") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+ggplot(hsb1.data, aes(mot, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Motivation") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+#Plot: Resisulas vs Predicted Y 
+ggplot(hsb1.data, aes(fitted.values(hsb1.lm), residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Predicted Y (science score)") + ylab("Residuals") + geom_hline(yintercept = 0) +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+# or:
+# plot(stdres(hsb1.lm)~fitted.values(hsb1.lm), col="black", 
+# pch=1, bty="l", xlab="Predicted Y (science score)", ylab="Standardized Residuals")
+# abline(0,0)
 
 
-4. 
+install.packages("car", dependencies=TRUE)
+
+install.packages("pls")
+library(pls)
+library(car) 
+library(MASS)
+# getting stadardized residuals
+st.residuals <- stdres(hsb1.lm)
+# create residuals hist 
+hist(st.residuals, freq = FALSE)
+curve(dnorm, add = TRUE)
+
+
+# get probability distribution for residuals
+# probDist <- pnorm(st.residuals)
+# create PP plot
+# plot(ppoints(length(st.residuals)), sort(probDist), main="PP Plot", xlab = "Observed Probability", ylab = "Expected Probability")
+#add diagonal line
+# abline(0,1) 
+
+# create PP plot
+ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept = 0, slope = 1) +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+```
 
 
 \begin{center}
