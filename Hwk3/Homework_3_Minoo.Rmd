@@ -20,6 +20,9 @@ install.packages("pls")
 library(pls)
 library(car) 
 library(MASS)
+install.packages("moments")
+install.packages("gvlma")
+install.packages("QuantPsyc", dependencies = TRUE) # for testing skewness/kurtosis
 
 ```
 
@@ -78,15 +81,23 @@ The t-test is not significant for the concept and motivation and we cannot concl
 Standard error of the regression coefficients show the variability of the sampling distribution for the slope for each of the predictors when accounting for the other predictors.
 
 4. 
-Independence: Having a look at plots for resicuals vs individual predictors, seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept. Several groups of dependent data points can be seen in these plots.
+Normality: The histogram for standarized residulas seems left-skewed.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c|c|c}
+& Statistic & SE & t-val & p. \\\hline
+Skewness & -0.2597293 & 0.1309307 & -1.983716 & 0.02364378\\
+Kurtosis & -0.3921500 & 0.2618615 & -1.497548 & 0.06712540
+\end{tabular}
+\end{table}
 
 
-Normality: The histogram for standarized residulas seems a little bit left-skewed. Skewness = -.25, which is < 1.96*9.32, (1.96 times residual standard error). However, standard errors might not be accurate since the independence of observations has been violated. But both PP plot and QQ plot seem fairly normal. The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Overall, I'm not sure if normality can be assumed. 
+The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Yet QQ plot seems fairly normal. Overall, I'm suspicious and think that normality assumption has been violated. 
 
-Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line.
+Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line. However, when we look at the residual vs. individual predictor plots, we can see grouping and dependence issues. So, linearity might have been violated.
 
-Homoscedasticicy: Some level of fanning out is observed in the residulads vs predicted Y plot, and it's more visible in residulads vs Locus of control. 
-
+Homoscedasticicy: Some level of fanning out is observed in the residulads vs predicted Y plot. It's even more visible in residulads vs Locus of control.
 
 ```{r fig.width= 4, fig.height= 3}
 #Plot: Residuals vs X
@@ -156,9 +167,12 @@ qqPlot(hsb1.lm, main = "QQ plot")
 ```
 
 ```{r include=FALSE}
-install.packages("moments")
-library(moments)
-skewness(st.residuals)
+library(QuantPsyc)
+norm(st.residuals) # to get skewness/kurtosis
+
+# or:
+# library(moments)
+# skewness(st.residuals)
 
 ks.test(st.residuals, fitted.values(hsb1.lm))
 
@@ -220,9 +234,23 @@ summary(gvmodel)
 \end{center}
 
 1.
+I tried BoxCox and BoxTidwell to achieve linearity, also tried taking logs to correct for the skewness, but neither of these changed the t-value for the two non-significant predictors (concept and motivation) significantly and they still remained non-significant.
+For the other types of regression (WLS) I couldn't find helpful resources on the internet, mainly because they were too advanced for me.
 
 
-2. It looks evenly distributed to me and I don't seem to detect any outliers here.
+2. 
+This research was designed to determine the influence of locus of control, self-concept and motivation on science score. Students' science scores were regressed on their scores for locus of control, self-concept and motivation. The overall multiple regression was statistically significant ($R^2 = 0.1139, F(3, 346) = 14.83, p < 0.001$).  The three variables (locus of control, self-concept and motivation) accounted for 11% of the variance in science score. From among these three variable, only locus of attention had a statistically significant effect on the science score. The unstandardized regression coefficient ( $\beta$) for locus of control was 4.7188 ( $t(346)= 6.068, p < 0.001$ ), meaning that for each additional score on locus of control, students' science score increased by 4.7188 points, controlling for on self-concept and motivation. These results suggest that locus of control is indeed an important influence on students’ science grade and that this effect holds even after students’ self-concept and motivation are taken into account. Students who want to improve their grades in science may do so by increasing their locus of contorl.
+
+\begin{table}[H]
+\centering
+\begin{tabular}{c|c|c}
+Variable & B & SE B \\\hline
+Locus & 4.7188\text{**} & 0.7776\\
+Concept & 0.2549 & 0.7606\\
+Motivation & 1.7113 & 1.4978
+\end{tabular}
+\caption{\label{tab:widgets}Summary of Regression Analysis for Variables Predicting Science Score. ** p-value< 0.01}
+\end{table}
 
 
 
@@ -231,9 +259,50 @@ summary(gvmodel)
 \end{center}
 
 1.
+\[\hat{Y} = 97.8 + 7.7(\text{Tretment A}) + 2.7(\text{Tretment B}) + 5.7(\text{Tretment C})\]
+
+The intercept shows the mean score for Treatment D (our reference).
+Each of the other coefficients in the model represents the difference between mean score for that treatment with the mean score for Treatment D.
+
+```{r include=FALSE}
+my.data <- read.table ("part3_table.csv", header = TRUE, na.strings="-99", sep = ",")
+
+head (my.data)
+summary(my.data)
+str(my.data)
+
+## Make factor variables first 
+my.data$Treatment.f = factor(my.data$Treatment, labels=c("A", "B", "C", "D"))
+
+
+## Using the factor variable, four dummay variables are created by the following command 
+my.data$Treatment.ct <- C(my.data$Treatment.f, contr.treatment, base=4)
+attributes(my.data$Treatment.ct)
+# my.data$Treatment.ct
+
+## Running ANOVA using regression analysis
+my.data.lm <- lm(Score~Treatment.ct, data=my.data)
+summary(my.data.lm)
+
+## (Unadjusted) Group means 
+tapply(my.data$Score, my.data$Treatment.f, mean)
+
+
+```
+
 
 2.
 
-3.
+$H_0$: $\mu_\text{treatment A} = \mu_\text{treatment B} =\mu_\text{treatment C} =\mu_\text{treatment D}$
 
+$H_1$: At least one of group means is different from $\mu_\text{treatment D}$.
+
+We failed to reject the null, since none of the mean scores in either of the treatment groups was significantly different from the mean score in Treatment D. (all t-values<1.4 and all p-values>.05).
+
+3.
+\[\hat{Y_D} = 97.8 + 7.7(0) + 2.7(0) + 5.7(0) = 97.8\]
+The mean score in Treatment D is 97.8.
+
+\[\hat{Y_B} = 97.8 + 7.7(0) + 2.7(1) + 5.7(0) = 100.5\]
+The mean score for Treatment B is 100.5.
 

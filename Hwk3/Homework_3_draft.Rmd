@@ -69,7 +69,8 @@ The t-test is not significant for the concept and motivation and we cannot concl
 
 Standard error of the regression coefficients show the variability of the sampling distribution for the slope for each of the predictors when accounting for the other predictors.
 
-4. Having a look at the resicuals vs individual predictors, it seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept.
+4. 
+Independence: Having a look at plots for resicuals vs individual predictors, seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept. Several groups of dependent data points can be seen in these plots.
 
 The residulads vs predicted Y plot indicates homogenity of variances (no obvious fanning observed).
 The histogram for standarized residulas is left-skewed.
@@ -187,6 +188,31 @@ ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept
 
 1.
 
+```{r}
+# to correct for normality:
+k = 2
+summary(lm(science ~ locus + log(k-concept) + log(k-mot), data = hsb1.data))
+summary(lm(log(science) ~ log(k-locus) + log(k-concept) + log(k-mot), data = hsb1.data))
+
+# to acheive linearity:
+boxCox(hsb1.lm, plotit = TRUE)
+# range(boxCox(hsb1.lm))
+lambda = 1.5
+
+science.trans<- yjPower(hsb1.data$science, lambda)
+predictors.trans<- boxTidwell(science.trans~(2-concept)+(2-mot), other.x = ~locus, data = hsb1.data, family = "yjPower", plotit = TRUE)
+
+boxCox(hsb1.lm, lambda = seq(-2, 2, by = .1))
+plot(hsb1.data$locus, hsb1.data$science)
+plot(hsb1.data$locus, hsb1.data$science^1.5)
+summary(lm((science)^1.5~locus+concept+mot, data = hsb1.data))
+
+
+
+glm.mod <- glm(science~locus+concept+mot, data = hsb1.data,family = gaussian(link = "log"))
+summary(glm.mod)
+
+```
 
 2. It looks evenly distributed to me and I don't seem to detect any outliers here.
 
