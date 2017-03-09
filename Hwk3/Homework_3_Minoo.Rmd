@@ -65,7 +65,7 @@ The alternative hypothesis on the other hand, states that at least one of the pr
 Looking at the results from the ANOVA table, our F-value exceeds the critical F-value and the p-value is less than .001. Therefore, at least one of our predictors has a significant regression coefficient and we reject the null hypothesis.
 
 3.
-As opposed to ANOVa, which is an omnibus test, regression table is reporting t-test for each of the predictors.
+As opposed to ANOVA, which is an omnibus test, regression table is reporting t-tests for each of the predictors.
 
 The null hypothesis for each of the predictors is that this specific predictor (let it be locus of control, self-concept or motivation) has no predictive capability for the outcome (science score) when controlling for other predictors in the model. In other words, the true slope is 0.
 
@@ -81,11 +81,11 @@ Standard error of the regression coefficients show the variability of the sampli
 Independence: Having a look at plots for resicuals vs individual predictors, seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept. Several groups of dependent data points can be seen in these plots.
 
 
-Normality: The histogram for standarized residulas seems a little bit left-skewed (skewness = -.25). But both PP plot and QQ plot seems fairly normal. The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). All in all, I think normality can be assumed. 
+Normality: The histogram for standarized residulas seems a little bit left-skewed. Skewness = -.25, which is < 1.96*9.32, (1.96 times residual standard error). However, standard errors might not be accurate since the independence of observations has been violated. But both PP plot and QQ plot seem fairly normal. The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Overall, I'm not sure if normality can be assumed. 
 
 Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line.
 
-Homoscedasticicy: Some level of fanning out is observed in the residulads vs predicted Y plot. This supports potential violation of homogenity of variances.
+Homoscedasticicy: Some level of fanning out is observed in the residulads vs predicted Y plot, and it's more visible in residulads vs Locus of control. 
 
 
 ```{r fig.width= 4, fig.height= 3}
@@ -152,6 +152,7 @@ ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept
 
 # qq plot for studentized residuals
 qqPlot(hsb1.lm, main = "QQ plot")
+
 ```
 
 ```{r include=FALSE}
@@ -161,6 +162,56 @@ skewness(st.residuals)
 
 ks.test(st.residuals, fitted.values(hsb1.lm))
 
+# Assessing Outliers
+outlierTest(hsb1.lm) # Bonferonni p-value for most extreme obs
+qqPlot(hsb1.lm, main="QQ Plot") #qq plot for studentized resid 
+leveragePlots(hsb1.lm) # leverage plots
+
+# Influential Observations
+# added variable plots 
+av.plots(hsb1.lm)
+# Cook's D plot
+# identify D values > 4/(n-k-1) 
+cutoff <- 4/((nrow(hsb1.data)-length(hsb1.lm$coefficients)-2)) 
+plot(hsb1.lm, which=4, cook.levels=cutoff)
+# Influence Plot 
+influencePlot(hsb1.lm,	id.method="identify", main="Influence Plot", sub="Circle size is proportial to Cook's Distance" )
+
+# Normality of Residuals
+# qq plot for studentized resid
+qqPlot(hsb1.lm, main="QQ Plot")
+# distribution of studentized residuals
+sresid <- studres(hsb1.lm) 
+hist(sresid, freq=FALSE, 
+   main="Distribution of Studentized Residuals")
+xfit<-seq(min(sresid),max(sresid),length=40) 
+yfit<-dnorm(xfit) 
+lines(xfit, yfit)
+
+# Evaluate homoscedasticity
+# non-constant error variance test
+ncvTest(hsb1.lm)
+# plot studentized residuals vs. fitted values 
+spreadLevelPlot(hsb1.lm)
+
+# Evaluate Collinearity
+vif(hsb1.lm) # variance inflation factors 
+sqrt(vif(hsb1.lm)) > 2 # problem?
+
+# Evaluate Nonlinearity
+# component + residual plot 
+crPlots(hsb1.lm)
+# Ceres plots 
+ceresPlots(hsb1.lm)
+
+# Test for Autocorrelated Errors
+durbinWatsonTest(hsb1.lm)
+
+# Global test of model assumptions
+install.packages("gvlma")
+library(gvlma)
+gvmodel <- gvlma(hsb1.lm) 
+summary(gvmodel)
 
 ```
 
