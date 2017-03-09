@@ -77,25 +77,18 @@ The t-test is not significant for the concept and motivation and we cannot concl
 
 Standard error of the regression coefficients show the variability of the sampling distribution for the slope for each of the predictors when accounting for the other predictors.
 
-4. Having a look at the resicuals vs individual predictors, it seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept.
+4. 
+Independence: Having a look at plots for resicuals vs individual predictors, seems that the independence assumption is violated for all the predictors, specially for motivation and self-concept. Several groups of dependent data points can be seen in these plots.
 
-The residulads vs predicted Y plot indicates homogenity of variances (no obvious fanning observed).
-The histogram for standarized residulas is left-skewed.
+
+Normality: The histogram for standarized residulas seems a little bit left-skewed (skewness = -.25). But both PP plot and QQ plot seems fairly normal. The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). All in all, I think normality can be assumed. 
+
+Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line.
+
+Homoscedasticicy: Some level of fanning out is observed in the residulads vs predicted Y plot. This supports potential violation of homogenity of variances.
+
 
 ```{r fig.width= 4, fig.height= 3}
-
-
-#plot: Observed Y vs predicted Y 
-ggplot(hsb1.data, aes(science, fitted.values(hsb1.lm)))+ geom_point(size = 2) + xlab("Observed Science Score") + ylab("Predicted Science Score") +
-   theme(
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        panel.background = element_blank(),
-        panel.border = element_blank(),
-        axis.line = element_line(),
-        axis.ticks = element_line(),
-     )
-
 #Plot: Residuals vs X
 ggplot(hsb1.data, aes(locus, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Locus of Control") + ylab("Residuals") +
    theme(
@@ -156,8 +149,20 @@ ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept
         axis.line = element_line(),
         axis.ticks = element_line(),
      )
+
+# qq plot for studentized residuals
+qqPlot(hsb1.lm, main = "QQ plot")
 ```
 
+```{r include=FALSE}
+install.packages("moments")
+library(moments)
+skewness(st.residuals)
+
+ks.test(st.residuals, fitted.values(hsb1.lm))
+
+
+```
 
 \begin{center}
 \Large \textbf{Part 2: Multiple Regression - Final model: Use data set HSB1}

@@ -149,6 +149,15 @@ st.residuals <- stdres(hsb1.lm)
 hist(st.residuals, freq = FALSE)
 curve(dnorm, add = TRUE)
 
+# or: # distribution of studentized residuals
+library(MASS)
+sresid <- studres(hsb1.lm) 
+hist(sresid, freq=FALSE, 
+   main="Distribution of Studentized Residuals")
+xfit<-seq(min(sresid),max(sresid),length=40) 
+yfit<-dnorm(xfit) 
+lines(xfit, yfit)
+
 
 # get probability distribution for residuals
 # probDist <- pnorm(st.residuals)
@@ -167,6 +176,8 @@ ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept
         axis.line = element_line(),
         axis.ticks = element_line(),
      )
+
+
 ```
 
 
