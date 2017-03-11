@@ -93,6 +93,43 @@ Kurtosis & -0.3921500 & 0.2618615 & -1.497548 & 0.06712540
 \end{table}
 
 
+
+\begin{table}[htp]
+\centering
+\addtolength{\tabcolsep}{3pt} % some more room between columns
+
+\caption{Group Example}
+
+\begin{tabular}{
+  l
+  S[table-format=2.0]
+  S[table-format=2.1]
+  S[table-format=1.1]
+  S[table-format=-1.2]
+  S[table-format=.2,table-comparator=true]
+}
+\toprule
+Variable & {$n$} & {$M$} & {$\mathit{SD}$} & {$t$} & {$p$} \\
+\midrule
+Overall group  &    &      &     & -3.43 & <0.01 \\
+\IE Group A    & 20 & 10.3 & 4.3 \\
+\IE Group B    & 30 & 14.3 & 1.4 \\
+\addlinespace
+Sex \\
+\IE Female     &    &      &     & -3.43 & <0.01 \\
+\IE[2] Group A & 10 & 10.3 & 4.3 \\
+\IE[2] Group B & 15 & 14.3 & 1.4 \\
+\IE Male       &    &      &     & -3.43 & <0.01 \\
+\IE[2] Group A & 10 & 10.3 & 4.3 \\
+\IE[2] Group B & 15 & 14.3 & 1.4 \\
+\midrule[\heavyrulewidth]
+\multicolumn{6}{l}{$M=\text{mean}$, $\mathit{SD}=\text{standard deviation}$}
+\end{tabular}
+
+\end{table}
+
+
+
 The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Yet QQ plot seems fairly normal. Overall, I'm suspicious and think that normality assumption has been violated. 
 
 Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line. However, when we look at the residual vs. individual predictor plots, we can see grouping and dependence issues. So, linearity might have been violated.
