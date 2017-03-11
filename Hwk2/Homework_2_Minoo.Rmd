@@ -205,7 +205,7 @@ Students' performance was regressed on the average sleep hours the night before.
 ```{r include=FALSE}
 ```
         (d) 
-These results suggest that sleeping well the night before a test is indeed an important influence on students’ performance on the test. Students who want to improve their performance on the test may do so by sleeping for longer hours the night before the test. These findings suggest that each additional hour of sleep the night before the test should result in close to a 2-point increase in students’ performance on the test.
+These results suggest that sleeping well the night before a test is indeed an important influence on students' performance on the test. Students who want to improve their performance on the test may do so by sleeping for longer hours the night before the test. These findings suggest that each additional hour of sleep the night before the test should result in close to a 2-point increase in students' performance on the test.
  
 
 \begin{center}
