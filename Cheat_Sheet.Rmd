@@ -1,0 +1,9 @@
+---
+title: "CheatSheet"
+author: "Minoo Ahmadi"
+date: "March 15, 2017"
+output: pdf_document
+---
+
+Z-test ($\sigma$ (SD of population) is known): $Z = \frac {\bar{X} - \mu}{\frac{\sigma}{\sqrt{n}}}$; standard error: $\sigma_{\bar{X}} = \frac{\sigma}{\sqrt{n}}$; $z \sim N (0,1)$; $(1-\alpha)CI = \bar{X} \pm Z_{\frac{\alpha}{2}}S_{\bar{X}}$
+One-sample t-test ($\sigma$ is unknown):$t= \frac {\bar{X} - \mu}{\frac{S}{\sqrt{n}}}$; standard error: $\S_{\bar{X}} = \frac{S}{\sqrt{n}}$;$t \sim t_{n-1}, \alpha/2$; $(1-\alpha)CI = \bar{X} \pm t_{n-1,\frac{\alpha}{2}}S_{\bar{X}}$
