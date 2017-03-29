@@ -29,7 +29,7 @@ install.packages("QuantPsyc", dependencies = TRUE) # for testing skewness/kurtos
 ```{r include=FALSE}
 getwd()
 # setwd("C:/Users/ahmadi/Documents/Courses/EDMS646/EDMS646_Spring_2017/Hwk3")
-file.path("Hwk3.R")
+file.path("Hwk3.R") # relative path (OS-independent)
 hsb1.data <- read.table ("HSB1.csv", header = TRUE, na.strings="-99", sep = ",")
 summary(hsb1.data)
 head(hsb1.data)
@@ -47,6 +47,14 @@ tail(hsb1.data)
 hsb1.lm <- lm(science~locus + concept + mot, data=hsb1.data)
 summary(hsb1.lm)
 names(hsb1.lm)
+
+# getting standardized beta coefficients:
+lm(scale(science) ~ scale(locus)+scale(concept)+scale(mot), data=hsb1.data)
+# or:
+library("QuantPsyc")
+mod <- lm(science~locus + concept + mot, data=hsb1.data)
+coef_lmbeta <- lm.beta(mod)
+coef_lmbeta
 ```
 \[\hat{Y} = 50.3514 + 4.7188(\text{locus}) + 0.2549(\text{concept}) + 1.7113(\text{mot})\]
 
@@ -266,10 +274,10 @@ This research was designed to determine the influence of locus of control, self-
 \toprule
 Variable & {$B$} & {$SE B$} & {$\beta$} \\
 \midrule
-Locus & 4.7188\text{**} & 0.7776 \\
+Locus & 4.71 \qquad \text{**} & 0.77 & 0.31 \\
 \addlinespace
-Concept & 0.2549 & 0.7606 \\
-Motivation & 1.7113 & 1.4978
+Concept & 0.25 & 0.76 & 0.01 \\
+Motivation & 1.71 & 1.49 & 0.06 \\
 \midrule[\heavyrulewidth]
 \multicolumn{6}{l}{$** p-value< 0.01$}
 \end{tabular}
