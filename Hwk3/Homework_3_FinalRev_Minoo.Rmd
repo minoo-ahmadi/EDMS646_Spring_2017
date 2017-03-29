@@ -261,7 +261,7 @@ This research was designed to determine the influence of locus of control, self-
 \begin{table}[htp]
 \centering
 \addtolength{\tabcolsep}{3pt} % some more room between columns
-\caption{Summary of Regression Analysis for Variables Predicting Science Score}
+\caption{Summary of Regression Analysis for Variables Predicting Science Score ($N = 300$)}
 
 \begin{tabular}{
   l
@@ -279,7 +279,7 @@ Locus & 4.71 \qquad \text{**} & 0.77 & 0.31 \\
 Concept & 0.25 & 0.76 & 0.01 \\
 Motivation & 1.71 & 1.49 & 0.06 \\
 \midrule[\heavyrulewidth]
-\multicolumn{6}{l}{$** p-value< 0.01$}
+\multicolumn{6}{l}{$** p< 0.01$}
 \end{tabular}
 
 \end{table}
