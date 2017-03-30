@@ -68,6 +68,32 @@ Controlling for self-concept and motivation, one unit increase in locus of contr
 Controlling for locus of control and motivation, one unit increase in self-concept will increase the science score by 0.2549 units.
 Controlling for locus of control and self-concept, one unit increase in motivation will increase the science score by 1.7113 units.
 
+
+\begin{table}[H]
+\begin{tabular}{c|c|c|c|c}
+Residuals: & & & &\\
+Min & 1Q &  Median  & 3Q  & Max \\\hline
+-26.6536 & -6.1518 &  0.5052  & 7.0151 & 21.1206\\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{c|c|c|c|c}
+Coefficients: & & & & \\
+& Estimate & Std. Error & t value & Pr(>|t|)\\\hline
+(Intercept) & 50.3514 &  1.0900 & 46.192 & < 2e-16 ***\\
+locus     &    4.7188 &    0.7776  & 6.068 & 3.39e-09 ***\\
+concept &  0.2549  & 0.7606 & 0.335 & 0.738\\
+mot & 1.7113 & 1.4978  & 1.143 & 0.254
+\end{tabular}
+\end{table}
+Signif. codes:  0 ‘\text{***}’ 0.001 ‘\text{**}’ 0.01 ‘\text{*}’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 9.326 on 346 degrees of freedom.
+Multiple R-squared:  0.1139,	Adjusted R-squared:  0.1062.
+F-statistic: 14.83 on 3 and 346 DF,  p-value: 4.192e-09.
+
+
 2.
 ```{r include=FALSE}
 anova(hsb1.lm)
@@ -83,6 +109,9 @@ The alternative hypothesis on the other hand, states that at least one of the pr
 Looking at the results from the ANOVA table, our F-value exceeds the critical F-value and the p-value is less than .001. Therefore, at least one of our predictors has a significant regression coefficient and we reject the null hypothesis.
 
 3.
+$H_0$: $\beta_j = 0$\
+$H_1$: $\beta_j \neq 0$
+
 As opposed to ANOVA, which is an omnibus test, regression table is reporting t-tests for each of the predictors.
 
 The null hypothesis for each of the predictors is that this specific predictor (let it be locus of control, self-concept or motivation) has no predictive capability for the outcome (science score) when controlling for other predictors in the model. In other words, the true slope is 0.
@@ -342,7 +371,10 @@ $H_0$: $\mu_\text{treatment A} = \mu_\text{treatment B} =\mu_\text{treatment C} 
 
 $H_1$: At least one of group means is different from $\mu_\text{treatment D}$.
 
-We failed to reject the null, since none of the mean scores in either of the treatment groups was significantly different from the mean score in Treatment D. (all t-values<1.4 and all p-values>.05).
+We failed to reject the null, because of all the below:
+The mean scores in the treatment group A was not significantly different from the mean score in Treatment D. (p>.05)
+The mean scores in the treatment group B was not significantly different from the mean score in Treatment D. (p>.05)
+The mean scores in the treatment group C was not significantly different from the mean score in Treatment D. (p>.05)
 
 3.
 \[\hat{Y_D} = 97.8 + 7.7(0) + 2.7(0) + 5.7(0) = 97.8\]
