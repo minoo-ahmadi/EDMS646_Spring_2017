@@ -53,6 +53,35 @@ Controlling for self-concept and motivation, one unit increase in locus of contr
 Controlling for locus of control and motivation, one unit increase in self-concept will increase the science score by 0.2549 units.
 Controlling for locus of control and self-concept, one unit increase in motivation will increase the science score by 1.7113 units.
 
+
+Call:
+lm(formula = science ~ locus + concept + mot, data = hsb1.data)
+
+\begin{table}[H]
+\begin{tabular}{c|c|c|c|c}
+Residuals: & & & &\\
+Min & 1Q &  Median  & 3Q  & Max \\\hline
+-26.6536 & -6.1518 &  0.5052  & 7.0151 & 21.1206\\
+\end{tabular}
+\end{table}
+
+\begin{table}[H]
+\begin{tabular}{c|c|c|c|c}
+Coefficients: & & & & \\
+& Estimate & Std. Error & t value & Pr(>|t|)\\\hline
+(Intercept) & 50.3514 &  1.0900 & 46.192 & < 2e-16 ***\\
+locus     &    4.7188 &    0.7776  & 6.068 & 3.39e-09 ***\\
+concept &  0.2549  & 0.7606 & 0.335 & 0.738\\
+mot & 1.7113 & 1.4978  & 1.143 & 0.254
+\end{tabular}
+\end{table}
+
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 9.326 on 346 degrees of freedom.
+Multiple R-squared:  0.1139,	Adjusted R-squared:  0.1062.
+F-statistic: 14.83 on 3 and 346 DF,  p-value: 4.192e-09.
+
 2.
 ```{r include=FALSE}
 anova(hsb1.lm)
@@ -70,11 +99,14 @@ Looking at the results from the ANOVA table, our F-value exceeds the critical F-
 3.
 As opposed to ANOVA, which is an omnibus test, regression table is reporting t-tests for each of the predictors.
 
-The null hypothesis for each of the predictors is that this specific predictor (let it be locus of control, self-concept or motivation) has no predictive capability for the outcome (science score) when controlling for other predictors in the model. In other words, the true slope is 0.
+The null hypothesis for each of the predictors is that this specific predictor (let it be locus of control, self-concept or motivation) has no predictive capability for the outcome (science score) when controlling for other predictors in the model. In other words, the true slope is 0:
+$H_0$: $\beta_j = 0$
+
 
 The alternative hypothesis on the other hand states that, when the other predictors in the model are controlled for, this specific predictor predicts the outcome and its regression coefficient is significantly different from 0.
+$H_1$: $\beta_j \neq 0$
 
-Based on the t-tests, it seems that locus of control is the only predictor in our model that can significantly predict the science score when accounting for self-concept and motivation. For locus of predictor, the t-value exceeds the critical t-value and our p-value is less than .001. Hence, we reject the null hypothesis.
+Based on the t-tests, it seems that locus of control is the only predictor in our model that can significantly predict the science score when accounting for self-concept and motivation. For locus of control, the t-value exceeds the critical t-value and our p-value is less than .001. Hence, we reject the null hypothesis.
 
 The t-test is not significant for the concept and motivation and we cannot conclude that they have the capability of predicting science score.
 
