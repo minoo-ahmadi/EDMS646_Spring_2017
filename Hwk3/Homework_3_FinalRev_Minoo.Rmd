@@ -258,51 +258,16 @@ For the other types of regression (WLS) I couldn't find helpful resources on the
 This research was designed to determine the influence of locus of control, self-concept and motivation on science score. Students' science scores were regressed on their scores for locus of control, self-concept and motivation. The overall multiple regression was statistically significant ($R^2 = 0.1139, F(3, 346) = 14.83, p < 0.001$).  The three variables (locus of control, self-concept and motivation) accounted for 11% of the variance in science score. From among these three variable, only locus of attention had a statistically significant effect on the science score. The unstandardized regression coefficient ( $\beta$) for locus of control was 4.7188 ( $t(346)= 6.068, p < 0.001$ ), meaning that for each additional score on locus of control, students' science score increased by 4.7188 points, controlling for on self-concept and motivation. These results suggest that locus of control is indeed an important influence on students' science grade and that this effect holds even after students' self-concept and motivation are taken into account. Students who want to improve their grades in science may do so by increasing their locus of contorl.
 
 
-
-
-\newcommand{\IE}[1][1]{% indent entry
-  \hspace{#1em}\ignorespaces
-}
-
 \begin{table}[htp]
-\centering
-\addtolength{\tabcolsep}{3pt} % some more room between columns
-\caption{Summary of Regression Analysis for Variables Predicting Science Score ($N = 300$)}
-
-\begin{tabular}{
-  l
-  S[table-format=2.0]
-  S[table-format=2.1]
-  S[table-format=1.1]
-  S[table-format=-1.2]
-  S[table-format=.2,table-comparator=true]
-}
-\toprule
-Variable & {$B$} & {$SE B$} & {$\beta$} \\
-\midrule
-Locus & 4.71 \qquad \text{**} & 0.77 & 0.31 \\
-\addlinespace
-Concept & 0.25 & 0.76 & 0.01 \\
-Motivation & 1.71 & 1.49 & 0.06 \\
-\midrule[\heavyrulewidth]
-\multicolumn{6}{l}{$** p< 0.01$}
-\end{tabular}
-
-\end{table}
-
-
-
-\begin{table}[tbp]
 \begin{center}
-\caption{Summary of Regression Analysis for Variables Predicting Science Score.}
-\begin{tabular}{lllll}
+\caption{Summary of Regression Analysis for Variables Predicting Science Score ($N = 300$)}
+\begin{tabular}{llll}
 \toprule
-Predictor & \multicolumn{1}{c}{$b$} & \multicolumn{1}{c}{95\% CI} & \multicolumn{1}{c}{$t(346)$} & \multicolumn{1}{c}{$p$}\\
+Variable & \multicolumn{1}{c}{$B$} & \multicolumn{1}{c}{\textit{SE B}} & \multicolumn{1}{c}{$\beta$}\\
 \midrule
-Intercept & 50.35 & $[48.21$, $52.50]$ & 46.19 & < .001\\
-Locus & 4.72 & $[3.19$, $6.25]$ & 6.07 & < .001\\
-Concept & 0.25 & $[-1.24$, $1.75]$ & 0.34 & .738\\
-Mot & 1.71 & $[-1.23$, $4.66]$ & 1.14 & .254\\
+Locus & 4.71\text{**} & 0.77 & 0.31\\
+Concept & 0.25 & 0.76 & 0.01\\
+Motivation & 1.71 & 1.49 & 0.06\\
 \bottomrule
 \end{tabular}
 \end{center}
