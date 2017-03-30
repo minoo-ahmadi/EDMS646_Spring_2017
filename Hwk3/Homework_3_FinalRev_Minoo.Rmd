@@ -23,12 +23,9 @@ library(MASS)
 install.packages("moments")
 install.packages("gvlma")
 install.packages("QuantPsyc", dependencies = TRUE) # for testing skewness/kurtosis
-install.packages("dplyr")
 install.packages("psych")
 install.packages("tidyr")
-library(dplyr)
 library(psych)
-library(tidyr)
 
 ```
 
@@ -138,7 +135,7 @@ Kurtosis & -0.3921500 & 0.2618615 & -1.497548 & 0.06712540
 
 
 
-The K-S test returns significant results though (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Yet QQ plot seems fairly normal. Overall, I'm suspicious and think that normality assumption has been violated. 
+The K-S test returns significant results (p<.001), which is not much reliable since our sample size is >50 (we have 300 subjects). Yet QQ plot seems fairly normal. Overall, I'm suspicious and think that normality assumption has been violated. 
 
 Linearity: The plot for residuals vs predicted Y shows fair linearity. The data points seem to be equally distributed above and below the y = 0 line. However, when we look at the residual vs. individual predictor plots, we can see grouping and dependence issues. So, linearity might have been violated.
 
@@ -281,6 +278,80 @@ summary(gvmodel)
 1.
 I tried BoxCox and BoxTidwell to achieve linearity, also tried taking logs to correct for the skewness, but neither of these changed the t-value for the two non-significant predictors (concept and motivation) significantly and they still remained non-significant.
 For the other types of regression (WLS) I couldn't find helpful resources on the internet, mainly because they were too advanced for me.
+
+\[\hat{Y} = 50.3514 + 4.7188(\text{locus}) + 0.2549(\text{concept}) + 1.7113(\text{mot})\]
+
+```{r fig.width= 4, fig.height= 3, include=FALSE}
+# Transformations:
+
+# log.Y<- log(1/50.3514) + log(4.7188)+log(hsb1.data$locus) + log(0.2549)+log(hsb1.data$concept) + log(1.7113)+log(hsb1.data$mot)
+# lm.log <- lm (log.Y~log(locus)+log(concept)+log(mot), data = hsb1.data)
+
+
+#Plot: Residuals vs X
+ggplot(hsb1.data, aes(locus, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Locus of Control") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+ggplot(hsb1.data, aes(concept, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Self-Concept") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+ggplot(hsb1.data, aes(mot, residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Motivation") + ylab("Residuals") +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+#Plot: Resisulas vs Predicted Y 
+ggplot(hsb1.data, aes(fitted.values(hsb1.lm), residuals(hsb1.lm)))+ geom_point(size = 2) + xlab("Predicted Y (science score)") + ylab("Residuals") + geom_hline(yintercept = 0) +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+
+
+# getting stadardized residuals
+st.residuals <- stdres(hsb1.lm)
+# create residuals hist 
+hist(st.residuals, freq = FALSE)
+curve(dnorm, add = TRUE)
+
+# create PP plot
+ggplot(hsb1.data, aes(sample = st.residuals))+ stat_qq() + geom_abline(intercept = 0, slope = 1) +
+   theme(
+        panel.grid.major = element_blank(),
+        panel.grid.minor = element_blank(),
+        panel.background = element_blank(),
+        panel.border = element_blank(),
+        axis.line = element_line(),
+        axis.ticks = element_line(),
+     )
+
+# qq plot for studentized residuals
+qqPlot(hsb1.lm, main = "QQ plot")
+```
 
 
 2. 
