@@ -23,6 +23,12 @@ library(MASS)
 install.packages("moments")
 install.packages("gvlma")
 install.packages("QuantPsyc", dependencies = TRUE) # for testing skewness/kurtosis
+install.packages("dplyr")
+install.packages("psych")
+install.packages("tidyr")
+library(dplyr)
+library(psych)
+library(tidyr)
 
 ```
 
@@ -283,6 +289,25 @@ Motivation & 1.71 & 1.49 & 0.06 \\
 \end{tabular}
 
 \end{table}
+
+
+
+\begin{table}[tbp]
+\begin{center}
+\caption{Summary of Regression Analysis for Variables Predicting Science Score.}
+\begin{tabular}{lllll}
+\toprule
+Predictor & \multicolumn{1}{c}{$b$} & \multicolumn{1}{c}{95\% CI} & \multicolumn{1}{c}{$t(346)$} & \multicolumn{1}{c}{$p$}\\
+\midrule
+Intercept & 50.35 & $[48.21$, $52.50]$ & 46.19 & < .001\\
+Locus & 4.72 & $[3.19$, $6.25]$ & 6.07 & < .001\\
+Concept & 0.25 & $[-1.24$, $1.75]$ & 0.34 & .738\\
+Mot & 1.71 & $[-1.23$, $4.66]$ & 1.14 & .254\\
+\bottomrule
+\end{tabular}
+\end{center}
+\end{table}
+
 
 
 

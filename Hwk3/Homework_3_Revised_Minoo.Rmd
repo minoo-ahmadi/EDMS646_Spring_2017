@@ -23,7 +23,16 @@ library(MASS)
 install.packages("moments")
 install.packages("gvlma")
 install.packages("QuantPsyc", dependencies = TRUE) # for testing skewness/kurtosis
-
+install.packages("devtools") # to use papaja
+devtools::install_github("crsh/papaja") # Install the papaja R package from GitHub for APA style
+library(papaja)
+install.packages("dplyr")
+install.packages("psych")
+install.packages("tidyr")
+library(dplyr)
+library(psych)
+library(tidyr)
+install.packages("RInside")
 ```
 
 ```{r include=FALSE}
@@ -324,6 +333,30 @@ Sex \\
 \end{tabular}
 
 \end{table}
+
+
+```{r, results = "asis"}
+install.packages("dplyr")
+install.packages("psych")
+install.packages("tidyr")
+library(dplyr)
+library(psych)
+library(tidyr)
+apa_lm <- apa_print(hsb1.lm)
+apa_table(apa_lm$table, caption = "Summary of Regression Analysis for Variables Predicting Science Score.")
+
+
+```
+
+# Calculate summary statistics
+Data.summary <- hsb1.lm %>% group_by(hsb1.lm$coefficients) %>%
+  summarise(
+    "B" = hsb1.lm$coefficients,
+    "SE B" = sd(weight)
+  )
+
+# Print table in APA format
+papaja::apa_table(chicken.summary, caption = "Summary statistics of chicken weights by Diet")
 
 
 
